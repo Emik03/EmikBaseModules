@@ -1,5 +1,4 @@
-﻿using KModkit;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -163,50 +162,6 @@ namespace EmikBaseModules
         {
             foreach (T element in source) act(element);
             return source;
-        }
-
-        /// <summary>
-        /// Returns true/false if the array has any color that matches the same RGBA components as the other color.
-        /// </summary>
-        /// <param name="a">The array to scan through and check for equality.</param>
-        /// <param name="b">The color to compare equality with.</param>
-        /// <returns>True if any in the array match the other color's r, g, b, and a fields.</returns>
-        internal static bool IsAnyEqual(this Color32[] a, Color32 b)
-        {
-            return a.Any(c => c.Equals(b));
-        }
-
-        /// <summary>
-        /// Returns true/false if the array has any color that matches the same RGBA components as the other color.
-        /// </summary>
-        /// <param name="a">The array to scan through and check for equality.</param>
-        /// <param name="b">The color to compare equality with.</param>
-        /// <returns>True if any in the array match the other color's r, g, b, and a fields.</returns>
-        internal static bool IsAnyEqual(this Color[] a, Color b)
-        {
-            return a.Any(c => c.Equals(b));
-        }
-
-        /// <summary>
-        /// Returns true/false if the colors have the same RGBA components.
-        /// </summary>
-        /// <param name="a">The first color to compare equality with.</param>
-        /// <param name="b">The second color to compare equality with.</param>
-        /// <returns>True if both color's r, g, b, and a fields are equal.</returns>
-        internal static bool IsEqual(this Color32 a, Color32 b)
-        {
-            return a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a;
-        }
-
-        /// <summary>
-        /// Returns true/false if the colors have the same RGBA components.
-        /// </summary>
-        /// <param name="a">The first color to compare equality with.</param>
-        /// <param name="b">The second color to compare equality with.</param>
-        /// <returns>True if both color's r, g, b, and a fields are equal.</returns>
-        internal static bool IsEqual(this Color a, Color b)
-        {
-            return a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a;
         }
 
         /// <summary>
