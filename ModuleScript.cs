@@ -161,19 +161,35 @@ namespace EmikBaseModules
         /// </summary>
         internal bool IsColorblind { get; private set; }
         /// <summary>
+        /// Is the module played in the editor?
+        /// </summary>
+        internal bool IsEditor { get; private set; }
+        /// <summary>
         /// Has the module been solved?
         /// </summary>
         internal bool IsSolve { get; set; }
 
         /// <summary>
+        /// Is TwitchPlays active?
+        /// </summary>
+        internal bool TwitchPlaysActive;
+        /// <summary>
+        /// Is Time Mode active?
+        /// </summary>
+        internal bool TimeModeActive;
+        /// <summary>
+        /// Is Zen Mode active?
+        /// </summary>
+        internal bool ZenModeActive;
+
+        /// <summary>
         /// The last instantiation of the module. Use moduleId == moduleIdCounter when only 1 module needs to do something.
         /// </summary>
         internal static int ModuleIdCounter { get; private set; }
-
         /// <summary>
         /// The moduleId, for logging.
         /// </summary>
-        internal int moduleId;
+        internal int ModuleId { get; private set; }
 
         /// <summary>
         /// Contains the current amount of seconds remaining on the timer. Requires KMBombInfo to be assigned.
@@ -201,7 +217,10 @@ namespace EmikBaseModules
         private void Awake()
         {
             // This gives a unique value of each instantiation, since moduleIdCounter is static.
-            moduleId = ++ModuleIdCounter;
+            ModuleId = ++ModuleIdCounter;
+
+            // This determines if it's running in-game or the editor.
+            IsEditor = Application.isEditor;
 
             /* 
              * The following adds all appropriate parameters for each property you assign.

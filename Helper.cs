@@ -19,7 +19,7 @@ namespace EmikBaseModules
         /// <param name="logType"></param>
         internal static void Log(this ModuleScript module, string log, LogType logType = LogType.Log)
         {
-            string formattedLog = "[{0} #{1}]: {2}".Format((object)module.ModuleName, module.moduleId, log);
+            string formattedLog = "[{0} #{1}]: {2}".Format((object)module.ModuleName, module.ModuleId, log);
             switch (logType)
             {
                 case LogType.Error:
