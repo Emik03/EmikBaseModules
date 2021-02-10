@@ -5,7 +5,7 @@
 ## About
 
 _EmikBaseModules_ is a collection of script files meant to help speed up the process of scripting Keep Talking and Nobody Explodes modules by giving better alternatives to common commands, and automating things universal to module-creation. (such as moduleIds, or logging)
-Some parts of the code were influenced by [this repository](https://github.com/Qkrisi/ktane-module-utils/wiki).
+Some parts of the code were influenced by [this repository](https://github.com/Qkrisi/ktane-module-utils).
 
 ## Installation
 
