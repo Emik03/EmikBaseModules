@@ -175,6 +175,17 @@ namespace EmikBaseModules
         }
 
         /// <summary>
+        /// Returns whether the index of the array is null.
+        /// </summary>
+        /// <param name="obj">The array to check.</param>
+        /// <param name="i">The index to check up on.</param>
+        /// <returns>True if the array is null, the index is not out of range, or the element corresponding to the index of the array is null.</returns>
+        internal static bool IsIndexNull(this object[] obj, int i)
+        {
+            return obj == null || i >= obj.Length || obj[i] == null;
+        }
+
+        /// <summary>
         /// Returns the character as lowercase.
         /// </summary>
         /// <typeparam name="T">The datatype of the variable.</typeparam>

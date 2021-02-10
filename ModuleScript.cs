@@ -289,10 +289,11 @@ namespace EmikBaseModules
         }
 
         /// <summary>
-        /// This 
+        /// Runs every frame.
         /// </summary>
         private void Update()
         {
+            // Updates the amount of time left within the TimeLeft property.
             TimeLeft = (int)KMBombInfo.GetTime();
         }
 
@@ -304,27 +305,27 @@ namespace EmikBaseModules
         /// <param name="j">The number to pass into the method.</param>
         private void AssignSelectable(KMSelectable selectable, ref int i, ref int j)
         {
-            if (OnCancel != null && i < OnCancel.Length && OnCancel[i] != null)
+            if (OnCancel.IsIndexNull(i))
                 selectable.OnCancel += OnCancel[i](j);
-            if (OnDefocus != null && i < OnDefocus.Length && OnDefocus[i] != null)
+            if (OnDefocus.IsIndexNull(i))
                 selectable.OnDefocus += OnDefocus[i](j);
-            if (OnDeselect != null && i < OnDeselect.Length && OnDeselect[i] != null)
+            if (OnDeselect.IsIndexNull(i))
                 selectable.OnDeselect += OnDeselect[i](j);
-            if (OnFocus != null && i < OnFocus.Length && OnFocus[i] != null)
+            if (OnFocus.IsIndexNull(i))
                 selectable.OnFocus += OnFocus[i](j);
-            if (OnHighlight != null && i < OnHighlight.Length && OnHighlight[i] != null)
+            if (OnHighlight.IsIndexNull(i))
                 selectable.OnHighlight += OnHighlight[i](j);
-            if (OnHighlightEnded != null && i < OnHighlightEnded.Length && OnHighlightEnded[i] != null)
+            if (OnHighlightEnded.IsIndexNull(i))
                 selectable.OnHighlightEnded += OnHighlightEnded[i](j);
-            if (OnInteract != null && i < OnInteract.Length && OnInteract[i] != null)
+            if (OnInteract.IsIndexNull(i))
                 selectable.OnInteract += OnInteract[i](j);
-            if (OnInteractEnded != null && i < OnInteractEnded.Length && OnInteractEnded[i] != null)
+            if (OnInteractEnded.IsIndexNull(i))
                 selectable.OnInteractEnded += OnInteractEnded[i](j);
-            if (OnLeft != null && i < OnLeft.Length && OnLeft[i] != null)
+            if (OnLeft.IsIndexNull(i))
                 selectable.OnLeft += OnLeft[i](j);
-            if (OnRight != null && i < OnRight.Length && OnRight[i] != null)
+            if (OnRight.IsIndexNull(i))
                 selectable.OnRight += OnRight[i](j);
-            if (OnSelect != null && i < OnSelect.Length && OnSelect[i] != null)
+            if (!OnSelect.IsIndexNull(i))
                 selectable.OnSelect += OnSelect[i](j);
         }
 
