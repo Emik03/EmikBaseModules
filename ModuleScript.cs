@@ -324,25 +324,25 @@ namespace EmikBaseModules
         /// <param name="j">The number to pass into the method.</param>
         private void AssignSelectable(KMSelectable selectable, ref int i, ref int j)
         {
-            if (OnCancel.IsIndexNull(i))
+            if (!OnCancel.IsIndexNull(i))
                 selectable.OnCancel += OnCancel[i](j);
-            if (OnDefocus.IsIndexNull(i))
+            if (!OnDefocus.IsIndexNull(i))
                 selectable.OnDefocus += OnDefocus[i](j);
-            if (OnDeselect.IsIndexNull(i))
+            if (!OnDeselect.IsIndexNull(i))
                 selectable.OnDeselect += OnDeselect[i](j);
-            if (OnFocus.IsIndexNull(i))
+            if (!OnFocus.IsIndexNull(i))
                 selectable.OnFocus += OnFocus[i](j);
-            if (OnHighlight.IsIndexNull(i))
+            if (!OnHighlight.IsIndexNull(i))
                 selectable.OnHighlight += OnHighlight[i](j);
-            if (OnHighlightEnded.IsIndexNull(i))
+            if (!OnHighlightEnded.IsIndexNull(i))
                 selectable.OnHighlightEnded += OnHighlightEnded[i](j);
-            if (OnInteract.IsIndexNull(i))
+            if (!OnInteract.IsIndexNull(i))
                 selectable.OnInteract += OnInteract[i](j);
-            if (OnInteractEnded.IsIndexNull(i))
+            if (!OnInteractEnded.IsIndexNull(i))
                 selectable.OnInteractEnded += OnInteractEnded[i](j);
-            if (OnLeft.IsIndexNull(i))
+            if (!OnLeft.IsIndexNull(i))
                 selectable.OnLeft += OnLeft[i](j);
-            if (OnRight.IsIndexNull(i))
+            if (!OnRight.IsIndexNull(i))
                 selectable.OnRight += OnRight[i](j);
             if (!OnSelect.IsIndexNull(i))
                 selectable.OnSelect += OnSelect[i](j);
