@@ -288,12 +288,27 @@ namespace EmikBaseModules
 
             if (KMSelectable != null)
             {
+                if (KMSelectable.Length == 0)
+                    this.Log("KMSelectable is length 0! Be sure to have the property assigned correctly!", LogType.Error);
                 for (int i = 0; i < KMSelectable.Length; i++)
-                    for (int j = 0; j < KMSelectable[i].Length; j++)
-                        if (KMSelectable[i][j] != null)
-                            AssignSelectable(KMSelectable[i][j], ref i, ref j);
-                        else
-                            PanicIfNull("KMSelectable[{0}][{1}]".Format(i, j), KMSelectable[i][j]);
+                {
+                    if (KMSelectable[i] != null)
+                    {
+                        if (KMSelectable[i].Length == 0)
+                            this.Log("KMSelectable[{0}] is length 0! Be sure to have the your public fields assigned correctly!".Format(i), LogType.Error);
+                        for (int j = 0; j < KMSelectable[i].Length; j++)
+                        { 
+                            if (KMSelectable[i][j] != null)
+                                AssignSelectable(KMSelectable[i][j], ref i, ref j);
+                            else
+                                PanicIfNull("KMSelectable[{0}][{1}]".Format(i, j), KMSelectable[i][j]);
+                        }
+                    }
+                    else
+                    { 
+                        PanicIfNull("KMSelectable[{0}]".Format(i), KMSelectable[i]);
+                    }
+                }
             }
             else
             {
