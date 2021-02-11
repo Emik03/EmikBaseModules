@@ -17,7 +17,7 @@ namespace EmikBaseModules
         /// <param name="module">The module that called this method, since it needs to access the module's name and id.</param>
         /// <param name="log">The information to log.</param>
         /// <param name="logType"></param>
-        internal static void Log(this ModuleScript module, string log, LogType logType = LogType.Log)
+        internal static void Log(this ModuleScript module, object log, LogType logType = LogType.Log)
         {
             string formattedLog = "[{0} #{1}]: {2}".Format((object)module.ModuleName, module.ModuleId, log);
             switch (logType)
