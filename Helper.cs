@@ -83,7 +83,19 @@ namespace EmikBaseModules
         }
 
         /// <summary>
-        /// Appends an element to an Enumerable.
+        /// Returns the element of an IEnumerable, wrapping the index if necessary.
+        /// </summary>
+        /// <typeparam name="T">The type of the enumerable.</typeparam>
+        /// <param name="source">The enumerable to index in.</param>
+        /// <param name="i">The index for the enumerable.</param>
+        /// <returns>The element of the IEnumerable, specified by the wrapped index (if it's greater than or equal the collection).</returns>
+        internal static T ElementAtWrap<T>(this IEnumerable<T> source, int i)
+        {
+            return source.ElementAtOrDefault(i % source.Count());
+        }
+
+        /// <summary>
+        /// Appends an element to an IEnumerable.
         /// </summary>
         /// <typeparam name="T">The type of the enumerable.</typeparam>
         /// <param name="source">The enumerable to append with.</param>
@@ -105,6 +117,33 @@ namespace EmikBaseModules
         {
             Array.Resize(ref array, array.Length + 1);
             array[array.Length - 1] = element;
+            return array;
+        }
+
+        /// <summary>
+        /// Prepends an element to an IEnumerable.
+        /// </summary>
+        /// <typeparam name="T">The type of the enumerable.</typeparam>
+        /// <param name="source">The enumerable to prepend with.</param>
+        /// <param name="item">The item to prepend to the enumerable.</param>
+        /// <returns>A new instance of the enumerable, with an added first entry being the item.</returns>
+        internal static IEnumerable<T> Prepend<T>(this IEnumerable<T> source, T item)
+        {
+            return new T[] { item }.Concat(source);
+        }
+
+        /// <summary>
+        /// Prepends an element to an array.
+        /// </summary>
+        /// <typeparam name="T">The type that both the array and element are.</typeparam>
+        /// <param name="array">The array that needs to be prepended.</param>
+        /// <param name="element">The element to prepend to the array.</param>
+        /// <returns>The new array, consisting of the old array, with an added element before it.</returns>
+        internal static T[] Prepend<T>(this T[] array, T element)
+        {
+            Array.Resize(ref array, array.Length + 1);
+            Array.Copy(array, 0, array, 1, array.Length);
+            array[0] = element;
             return array;
         }
 
