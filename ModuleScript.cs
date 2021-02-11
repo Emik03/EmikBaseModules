@@ -300,11 +300,8 @@ namespace EmikBaseModules
                 PanicIfParentNull("KMSelectable", OnCancel, OnDefocus, OnDeselect, OnFocus, OnHighlight, OnHighlightEnded, OnInteract, OnInteractEnded, OnLeft, OnRight, OnSelect);
             }
 
-            // This disables Update().
             if (OnTimerTick != null)
                 PanicIfNull("KMBombInfo", KMBombInfo);
-            else
-                enabled = false;
         }
 
         /// <summary>
@@ -313,7 +310,8 @@ namespace EmikBaseModules
         private void Update()
         {
             // Updates the amount of time left within the TimeLeft property.
-            TimeLeft = (int)KMBombInfo.GetTime();
+            if (KMBombInfo != null)
+                TimeLeft = (int)KMBombInfo.GetTime();
         }
 
         /// <summary>
