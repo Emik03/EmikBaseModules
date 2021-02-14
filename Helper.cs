@@ -83,6 +83,16 @@ namespace EmikBaseModules
         }
 
         /// <summary>
+        /// Returns 0 if the array is null, otherwise the array length.
+        /// </summary>
+        /// <param name="array">The array to return its length.</param>
+        /// <returns>The array's length, or if null, 0.</returns>
+        internal static int LengthSafe(this Array array)
+        {
+            return array != null ? array.Length : 0;
+        }
+
+        /// <summary>
         /// Returns the element of an IEnumerable, wrapping the index if necessary.
         /// </summary>
         /// <typeparam name="T">The type of the enumerable.</typeparam>
