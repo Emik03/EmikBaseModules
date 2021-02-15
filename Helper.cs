@@ -209,6 +209,7 @@ namespace EmikBaseModules
         /// <returns>The modification of the variable after each element goes through the action provided.</returns>
         internal static IEnumerable<T> ForEach<T>(this IEnumerable<T> source, Action<T> act)
         {
+            if (source == null) return source;
             foreach (T element in source) act(element);
             return source;
         }
