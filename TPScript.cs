@@ -25,6 +25,11 @@ namespace EmikBaseModules
         internal abstract string TwitchHelpMessage { get; }
 
         /// <summary>
+        /// Should the TwitchPlays command be cancelled?
+        /// </summary>
+        internal bool TwitchShouldCancelCommand;
+
+        /// <summary>
         /// Halts until the condition is false.
         /// </summary>
         /// <param name="condition">This variable determines whether the IEnumerator keeps running.</param>
