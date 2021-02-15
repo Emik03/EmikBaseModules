@@ -225,6 +225,16 @@ namespace EmikBaseModules
         }
 
         /// <summary>
+        /// Returns the singleton selectable as an array. Meant for TwitchPlays.
+        /// </summary>
+        /// <param name="selectable"></param>
+        /// <returns></returns>
+        internal static KMSelectable[] ToArray(this KMSelectable selectable)
+        {
+            return new[] { selectable };
+        }
+
+        /// <summary>
         /// Returns whether the index of the array is null.
         /// </summary>
         /// <param name="obj">The array to check.</param>
@@ -255,6 +265,16 @@ namespace EmikBaseModules
         internal static string Format(this string str, params object[] args)
         {
             return string.Format(str, args);
+        }
+
+        /// <summary>
+        /// Returns whether the string is either null or empty.
+        /// </summary>
+        /// <param name="str">The string to give a null and empty string check on.</param>
+        /// <returns>True if the string is either null or string empty ("").</returns>
+        internal static bool IsNullOrEmpty(this string str)
+        {
+            return str == null || str == string.Empty;
         }
     }
 }

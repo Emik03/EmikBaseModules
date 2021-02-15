@@ -12,6 +12,10 @@ namespace EmikBaseModules
     public abstract class TPScript : MonoBehaviour
     {
         /// <summary>
+        /// The instance of ModuleScript, so that it can fetch information related to it.
+        /// </summary>
+        internal abstract ModuleScript ModuleScript { get; }
+        /// <summary>
         /// Runs when a twitch command is directed to the module. The string is the command.
         /// </summary>
         internal abstract IEnumerator ProcessTwitchCommand(string command);
@@ -23,11 +27,100 @@ namespace EmikBaseModules
         /// A help message that can be performed with !{#} help where # is the module id.
         /// </summary>
         internal abstract string TwitchHelpMessage { get; }
+        /// <summary>
+        /// This specifies the link sent when doing !{0} manual. By default this returns the HTML link into the repository.
+        /// </summary>
+        internal virtual string TwitchManualCode { get { return "https://ktane.timwi.de/HTML/{0}.html".Format((object)ModuleScript.ModuleName); } }
 
         /// <summary>
         /// Should the TwitchPlays command be cancelled?
         /// </summary>
         internal bool TwitchShouldCancelCommand;
+        /// <summary>
+        /// Should TwitchPlays allow this module to skip time around?
+        /// </summary>
+        internal bool TwitchPlaysSkipTimeAllowed;
+
+        /// <summary>
+        /// This interrupts the TwitchPlays command if a module exists within this list.
+        /// </summary>
+        internal List<KMBombModule> TwitchAbandonModule;
+
+        /// <summary>
+        /// These strings represent a bunch of TwitchPlays functionality, read more on here: https://github.com/samfundev/KtaneTwitchPlays/wiki/External-Mod-Module-Support
+        /// </summary>
+        internal const string Strike = "strike",
+            Solve = "solve",
+            UnsubmittablePenalty = "unsubmittablepenalty", 
+            TryCancelSequence = "trycancelsequence", 
+            Cancelled = "cancelled", 
+            MultipleStrikes = "multiple strikes", 
+            EndMultipleStrikes = "end multiple strikes", 
+            AutoSolve = "autosolve", 
+            CancelDetonate = "cancel detonate", 
+            WaitingMusic = "waiting music", 
+            EndWaitingMusic = "end waiting music", 
+            ToggleWaitingMusic = "toggle waiting music", 
+            HideCamera = "hide camera";
+
+        // These methods also do similar, except they have additional parameters.
+
+        internal string StrikeMessage(string message)
+        {
+            return AppendIfNotNullOrEmpty("strikemessage", message);
+        }
+
+        internal string TryCancel(string message = null)
+        {
+            return AppendIfNotNullOrEmpty("trycancel", message);
+        }
+
+        internal string TryWaitCancel(float time, string message = null)
+        {
+            return AppendIfNotNullOrEmpty("strikemessage", time, message);
+        }
+
+        internal string SendToChat(string message)
+        {
+            return AppendIfNotNullOrEmpty("sendtochat", message);
+        }
+
+        internal string SendToChatError(string message)
+        {
+            return AppendIfNotNullOrEmpty("sendtochaterror ", message);
+        }
+
+        internal string SendDelayedMessage(float time, string message)
+        {
+            return AppendIfNotNullOrEmpty("senddelayedmessage", time, message);
+        }
+
+        internal string Detonate(float? time = null, string message = null)
+        {
+            return AppendIfNotNullOrEmpty("senddelayedmessage", time, message);
+        }
+
+        internal string SkipTime(string seconds = null)
+        {
+            return AppendIfNotNullOrEmpty("senddelayedmessage", seconds);
+        }
+
+        internal string AwardPoints(int points)
+        {
+            return AppendIfNotNullOrEmpty("awardpoints", points);
+        }
+
+        internal string AwardPointsOnSolve(int points)
+        {
+            return AppendIfNotNullOrEmpty("awardpointsonsolve", points);
+        }
+
+        private string AppendIfNotNullOrEmpty(string main, params object[] toAppend)
+        {
+            for (int i = 0; toAppend != null && i < toAppend.Length; i++)
+                main += ' ' + toAppend[i].ToString();
+            return main;
+        }
 
         /// <summary>
         /// Halts until the condition is false.
