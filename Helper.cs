@@ -87,9 +87,9 @@ namespace EmikBaseModules
         /// </summary>
         /// <param name="array">The array to return its length.</param>
         /// <returns>The array's length, or if null, 0.</returns>
-        internal static int LengthSafe(this Array array)
+        internal static int LengthOrDefault(this Array array)
         {
-            return array != null ? array.Length : 0;
+            return array != null ? array.Length : default(int);
         }
 
         /// <summary>
