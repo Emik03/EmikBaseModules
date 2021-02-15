@@ -80,6 +80,7 @@ namespace EmikBaseModules
                 ts.All(t => int.TryParse(t.ToString(), out _) && (min == null || min <= _) && (max == null || max >= _))
                 ? ts.Select(t => int.Parse(t.ToString())).ToArray() : null;
         }
+
         /// <summary>
         /// Tests a string against a regular expression.
         /// </summary>
