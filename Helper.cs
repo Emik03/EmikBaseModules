@@ -35,7 +35,7 @@ namespace EmikBaseModules
                     Debug.Log(formattedLog);
                     break;
                 case LogType.Exception:
-                    Debug.LogWarning(formattedLog);
+                    Debug.LogException((Exception)log);
                     break;
                 default:
                     throw new NotImplementedException(logType.ToString() + " is not a valid log type.");
