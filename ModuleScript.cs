@@ -14,16 +14,12 @@ namespace EmikBaseModules
         internal virtual KMBombModule KMBombModule { get; set; }
 
         /// <summary>
-        /// 0 events. Used to set 'IgnoreList'.
+        /// Instance of a boss module, is used to set the ignore list.
         /// </summary>
         internal virtual KMBossModule KMBossModule { get; set; }
-        /// <summary>
-        /// Contains modules that should be ignored, typically for boss modules.
-        /// </summary>
-        internal string[] IgnoreList { get; set; }
 
         /// <summary>
-        /// 0 events. Used to set 'IsColorblind'.
+        /// Accesses the colorblind mod in-game, is used to set IsColorblind.
         /// </summary>
         internal virtual KMColorblindMode KMColorblindMode { get; set; }
 
@@ -110,6 +106,11 @@ namespace EmikBaseModules
             }
         }
         private int _timeLeft;
+
+        /// <summary>
+        /// Contains modules that should be ignored, typically for boss modules.
+        /// </summary>
+        internal string[] IgnoreList { get; set; }
 
         /// <summary>
         /// Event initializer.
