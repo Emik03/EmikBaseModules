@@ -20,11 +20,11 @@ namespace EmikBaseModules
         /// <summary>
         /// Triggers when the bomb runs out of time, or when current strikes equals max strikes.
         /// </summary>
-        internal virtual KMBombInfo.KMBombSolvedDelegate OnBombExploded { get; set; }
+        internal virtual Action OnBombExploded { get; set; }
         /// <summary>
         /// Triggers when all solvable modules are solved.
         /// </summary>
-        internal virtual KMBombInfo.KMBombSolvedDelegate OnBombSolved { get; set; }
+        internal virtual Action OnBombSolved { get; set; }
 
         /// <summary>
         /// 1 event: OnActivate.
@@ -33,7 +33,7 @@ namespace EmikBaseModules
         /// <summary>
         /// Triggers when the lights come on.
         /// </summary>
-        internal virtual KMBombModule.KMModuleActivateEvent OnActivate { get; set; }
+        internal virtual Action OnActivate { get; set; }
 
         /// <summary>
         /// 0 events. Used to set 'IgnoreList'.
@@ -56,11 +56,11 @@ namespace EmikBaseModules
         /// <summary>
         /// Triggers when the alarm clock goes on to off, or vice versa.
         /// </summary>
-        internal virtual KMGameInfo.KMAlarmClockChangeDelegate OnAlarmClockChange { get; set; }
+        internal virtual Func<bool, Action> OnAlarmClockChange { get; set; }
         /// <summary>
         /// Triggers when the lights goes on to off, or vice versa.
         /// </summary>
-        internal virtual KMGameInfo.KMLightsChangeDelegate OnLightsChange { get; set; }
+        internal virtual Func<bool, Action> OnLightsChange { get; set; }
 
         /// <summary>
         /// 4 events: OnActivateNeedy, OnNeedyActivation, OnNeedyDeactivation, OnTimerExpired
@@ -69,68 +69,19 @@ namespace EmikBaseModules
         /// <summary>
         /// Triggers when the lights come on.
         /// </summary>
-        internal virtual KMNeedyModule.KMModuleActivateEvent OnActivateNeedy { get; set; }
+        internal virtual Action OnActivateNeedy { get; set; }
         /// <summary>
         /// Triggers when the needy activates the timer.
         /// </summary>
-        internal virtual KMNeedyModule.KMNeedyActivationEvent OnNeedyActivation { get; set; }
+        internal virtual Action OnNeedyActivation { get; set; }
         /// <summary>
         /// Triggers when the needy deactivates the timer.
         /// </summary>
-        internal virtual KMNeedyModule.KMNeedyDeactivationEvent OnNeedyDeactivation { get; set; }
+        internal virtual Action OnNeedyDeactivation { get; set; }
         /// <summary>
         /// Triggers when its timer runs out.
         /// </summary>
-        internal virtual KMNeedyModule.KMTimerExpiredEvent OnTimerExpired { get; set; }
-
-        /// <summary>
-        /// 11 events: OnCancel, OnDefocus, OnFocus, OnHighlight, OnHighlightEnded, OnInteract, OnInteractEnded, OnLeft, OnRight, OnSelect.
-        /// </summary>
-        internal virtual KMSelectable[][] KMSelectable { get; set; }
-        /// <summary>
-        /// Triggers when player backs out of this selectable, an example would be zooming out of a module. Return is whether it should drill out to parent.
-        /// </summary>
-        internal virtual Func<int, KMSelectable.OnCancelHandler>[] OnCancel { get; set; }
-        /// <summary>
-        /// Triggers when a module is defocused, this is when a different selectable becomes the focus or the module has been backed out of.
-        /// </summary>
-        internal virtual Func<int, Action>[] OnDefocus { get; set; }
-        /// <summary>
-        /// Triggers when the selectable stops being the current selectable.
-        /// </summary>
-        internal virtual Func<int, Action>[] OnDeselect { get; set; }
-        /// <summary>
-        /// Triggers when a module is focused, this is when it is interacted with from the bomb face level and this module's children can be selected.
-        /// </summary>
-        internal virtual Func<int, Action>[] OnFocus { get; set; }
-        /// <summary>
-        /// Triggers when the highlight is turned on.
-        /// </summary>
-        internal virtual Func<int, Action>[] OnHighlight { get; set; }
-        /// <summary>
-        /// Triggers when the highlight is turned off.
-        /// </summary>
-        internal virtual Func<int, Action>[] OnHighlightEnded { get; set; }
-        /// <summary>
-        /// Triggers when player interacts with this selectable. Done on button down.  Return is whether it should drill in to children.
-        /// </summary>
-        internal virtual Func<int, KMSelectable.OnInteractHandler>[] OnInteract { get; set; }
-        /// <summary>
-        /// Triggers when a player is interacting with this selectable and releases the mouse or controller button.
-        /// </summary>
-        internal virtual Func<int, Action>[] OnInteractEnded { get; set; }
-        /// <summary>
-        /// Called when player pulls stick left while this selectable is focused.
-        /// </summary>
-        internal virtual Func<int, Action>[] OnLeft { get; set; }
-        /// <summary>
-        /// Called when player pulls stick right while this selectable is focused.
-        /// </summary>
-        internal virtual Func<int, Action>[] OnRight { get; set; }
-        /// <summary>
-        /// Called whenever this selectable becomes the current selectable.
-        /// </summary>
-        internal virtual Func<int, Action>[] OnSelect { get; set; }
+        internal virtual Action OnTimerExpired { get; set; }
 
         /// <summary>
         /// Called whenever the timer tick changes.
@@ -194,20 +145,20 @@ namespace EmikBaseModules
         /// <summary>
         /// Contains the current amount of seconds remaining on the timer. Requires KMBombInfo to be assigned.
         /// </summary>
-        internal int TimeLeft 
+        internal int TimeLeft
         {
-            get 
-            { 
+            get
+            {
                 return _timeLeft;
-            } 
+            }
             set
             {
                 if (_timeLeft == value)
                     return;
-                _timeLeft = value; 
+                _timeLeft = value;
                 if (OnTimerTick != null)
-                    OnTimerTick.Invoke(); 
-            } 
+                    OnTimerTick.Invoke();
+            }
         }
         private int _timeLeft;
 
@@ -231,9 +182,9 @@ namespace EmikBaseModules
             if (KMBombInfo != null)
             {
                 if (OnBombExploded != null)
-                    KMBombInfo.OnBombExploded += OnBombExploded;
+                    KMBombInfo.OnBombExploded += delegate () { OnBombExploded.Invoke(); };
                 if (OnBombSolved != null)
-                    KMBombInfo.OnBombSolved += OnBombSolved;
+                    KMBombInfo.OnBombSolved += delegate () { OnBombSolved.Invoke(); }; 
             }
             else
             {
@@ -243,7 +194,7 @@ namespace EmikBaseModules
             if (KMBombModule != null)
             {
                 if (OnActivate != null)
-                    KMBombModule.OnActivate += (() => IsActivate = true) + OnActivate;
+                    KMBombModule.OnActivate += delegate () { IsActivate = true; OnActivate.Invoke(); };
 
                 if (KMBossModule != null)
                     IgnoreList = KMBossModule.GetIgnoredModules(KMBombModule, IgnoreList);
@@ -261,9 +212,9 @@ namespace EmikBaseModules
             if (KMGameInfo != null)
             {
                 if (OnAlarmClockChange != null)
-                    KMGameInfo.OnAlarmClockChange += OnAlarmClockChange;
+                    KMGameInfo.OnAlarmClockChange += on => OnAlarmClockChange(on);
                 if (OnLightsChange != null)
-                    KMGameInfo.OnLightsChange += OnLightsChange;
+                    KMGameInfo.OnLightsChange += on => OnLightsChange(on);
             }
             else
             {
@@ -273,46 +224,17 @@ namespace EmikBaseModules
             if (KMNeedyModule != null)
             {
                 if (OnActivateNeedy != null)
-                    KMNeedyModule.OnActivate += OnActivateNeedy;
+                    KMNeedyModule.OnActivate += delegate () { OnActivateNeedy.Invoke(); };
                 if (OnNeedyActivation != null)
-                    KMNeedyModule.OnNeedyActivation += OnNeedyActivation;
+                    KMNeedyModule.OnNeedyActivation += delegate () { OnNeedyActivation.Invoke(); };
                 if (OnNeedyDeactivation != null)
-                    KMNeedyModule.OnNeedyDeactivation += OnNeedyDeactivation;
+                    KMNeedyModule.OnNeedyDeactivation += delegate () { OnNeedyDeactivation.Invoke(); };
                 if (OnTimerExpired != null)
-                    KMNeedyModule.OnTimerExpired += OnTimerExpired;
+                    KMNeedyModule.OnTimerExpired += delegate () { OnTimerExpired.Invoke(); };
             }
             else
             {
                 PanicIfParentNull("KMNeedyModule", OnActivateNeedy, OnNeedyActivation, OnNeedyDeactivation, OnTimerExpired);
-            }
-
-            if (KMSelectable != null)
-            {
-                if (KMSelectable.Length == 0)
-                    this.Log("KMSelectable is length 0! Be sure to have the property assigned correctly!", LogType.Error);
-                for (int i = 0; i < KMSelectable.Length; i++)
-                {
-                    if (KMSelectable[i] != null)
-                    {
-                        if (KMSelectable[i].Length == 0)
-                            this.Log("KMSelectable[{0}] is length 0! Be sure to have the your public fields assigned correctly!".Format(i), LogType.Error);
-                        for (int j = 0; j < KMSelectable[i].Length; j++)
-                        { 
-                            if (KMSelectable[i][j] != null)
-                                AssignSelectable(KMSelectable[i][j], ref i, ref j);
-                            else
-                                PanicIfNull("KMSelectable[{0}][{1}]".Format(i, j), KMSelectable[i][j]);
-                        }
-                    }
-                    else
-                    { 
-                        PanicIfNull("KMSelectable[{0}]".Format(i), KMSelectable[i]);
-                    }
-                }
-            }
-            else
-            {
-                PanicIfParentNull("KMSelectable", OnCancel, OnDefocus, OnDeselect, OnFocus, OnHighlight, OnHighlightEnded, OnInteract, OnInteractEnded, OnLeft, OnRight, OnSelect);
             }
 
             if (OnTimerTick != null)
@@ -327,38 +249,6 @@ namespace EmikBaseModules
             // Updates the amount of time left within the TimeLeft property.
             if (KMBombInfo != null)
                 TimeLeft = (int)KMBombInfo.GetTime();
-        }
-
-        /// <summary>
-        /// Assigns all events to the selectable, since there are so many of them.
-        /// </summary>
-        /// <param name="selectable">The selectable to assign events to.</param>
-        /// <param name="i">The index of the methods array.</param>
-        /// <param name="j">The number to pass into the method.</param>
-        private void AssignSelectable(KMSelectable selectable, ref int i, ref int j)
-        {
-            if (!OnCancel.IsIndexNull(i))
-                selectable.OnCancel += OnCancel[i](j);
-            if (!OnDefocus.IsIndexNull(i))
-                selectable.OnDefocus += OnDefocus[i](j);
-            if (!OnDeselect.IsIndexNull(i))
-                selectable.OnDeselect += OnDeselect[i](j);
-            if (!OnFocus.IsIndexNull(i))
-                selectable.OnFocus += OnFocus[i](j);
-            if (!OnHighlight.IsIndexNull(i))
-                selectable.OnHighlight += OnHighlight[i](j);
-            if (!OnHighlightEnded.IsIndexNull(i))
-                selectable.OnHighlightEnded += OnHighlightEnded[i](j);
-            if (!OnInteract.IsIndexNull(i))
-                selectable.OnInteract += OnInteract[i](j);
-            if (!OnInteractEnded.IsIndexNull(i))
-                selectable.OnInteractEnded += OnInteractEnded[i](j);
-            if (!OnLeft.IsIndexNull(i))
-                selectable.OnLeft += OnLeft[i](j);
-            if (!OnRight.IsIndexNull(i))
-                selectable.OnRight += OnRight[i](j);
-            if (!OnSelect.IsIndexNull(i))
-                selectable.OnSelect += OnSelect[i](j);
         }
 
         /// <summary>
@@ -387,7 +277,7 @@ namespace EmikBaseModules
             const string ErrorMessage = @"{0} is null. Be sure to check that you assigned your public fields correctly!";
 
             if (obj == null)
-            { 
+            {
                 this.Log(ErrorMessage.Format((object)name), LogType.Error);
                 enabled = false;
             }

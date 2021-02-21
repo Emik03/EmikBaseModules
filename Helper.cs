@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Rnd = UnityEngine.Random;
 
@@ -227,11 +228,11 @@ namespace EmikBaseModules
         /// <summary>
         /// Returns the singleton selectable as an array. Meant for TwitchPlays.
         /// </summary>
-        /// <param name="selectable"></param>
-        /// <returns></returns>
-        internal static KMSelectable[] ToArray(this KMSelectable selectable)
+        /// <param name="kmSelectable">The singular KMSelectable.</param>
+        /// <returns>An array of size 1 containing only the KMSelectable provided.</returns>
+        internal static KMSelectable[] ToArray(this KMSelectable kmSelectable)
         {
-            return new[] { selectable };
+            return new[] { kmSelectable };
         }
 
         /// <summary>
