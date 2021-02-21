@@ -9,31 +9,9 @@ namespace EmikBaseModules
     public abstract class ModuleScript : MonoBehaviour
     {
         /// <summary>
-        /// 0 events. 1 extension method: KMAudio.PushButton();
-        /// </summary>
-        internal virtual KMAudio KMAudio { get; set; }
-
-        /// <summary>
-        /// 2 events: OnBombExploded, OnBombSolved.
-        /// </summary>
-        internal virtual KMBombInfo KMBombInfo { get; set; }
-        /// <summary>
-        /// Triggers when the bomb runs out of time, or when current strikes equals max strikes.
-        /// </summary>
-        internal virtual Action OnBombExploded { get; set; }
-        /// <summary>
-        /// Triggers when all solvable modules are solved.
-        /// </summary>
-        internal virtual Action OnBombSolved { get; set; }
-
-        /// <summary>
-        /// 1 event: OnActivate.
+        /// Instance of a regular module. Used to get the name of the module.
         /// </summary>
         internal virtual KMBombModule KMBombModule { get; set; }
-        /// <summary>
-        /// Triggers when the lights come on.
-        /// </summary>
-        internal virtual Action OnActivate { get; set; }
 
         /// <summary>
         /// 0 events. Used to set 'IgnoreList'.
@@ -50,43 +28,14 @@ namespace EmikBaseModules
         internal virtual KMColorblindMode KMColorblindMode { get; set; }
 
         /// <summary>
-        /// 2 events: OnAlarmClockChange, OnLightsChange.
-        /// </summary>
-        internal virtual KMGameInfo KMGameInfo { get; set; }
-        /// <summary>
-        /// Triggers when the alarm clock goes on to off, or vice versa.
-        /// </summary>
-        internal virtual Func<bool, Action> OnAlarmClockChange { get; set; }
-        /// <summary>
-        /// Triggers when the lights goes on to off, or vice versa.
-        /// </summary>
-        internal virtual Func<bool, Action> OnLightsChange { get; set; }
-
-        /// <summary>
-        /// 4 events: OnActivateNeedy, OnNeedyActivation, OnNeedyDeactivation, OnTimerExpired
+        /// Instance of a needy module. Used to get the name of the module.
         /// </summary>
         internal virtual KMNeedyModule KMNeedyModule { get; set; }
-        /// <summary>
-        /// Triggers when the lights come on.
-        /// </summary>
-        internal virtual Action OnActivateNeedy { get; set; }
-        /// <summary>
-        /// Triggers when the needy activates the timer.
-        /// </summary>
-        internal virtual Action OnNeedyActivation { get; set; }
-        /// <summary>
-        /// Triggers when the needy deactivates the timer.
-        /// </summary>
-        internal virtual Action OnNeedyDeactivation { get; set; }
-        /// <summary>
-        /// Triggers when its timer runs out.
-        /// </summary>
-        internal virtual Action OnTimerExpired { get; set; }
 
         /// <summary>
-        /// Called whenever the timer tick changes.
+        /// Called whenever the timer tick changes. Requires KMBombInfo to access the time left.
         /// </summary>
-        internal virtual Action OnTimerTick { get; set; }
+        internal virtual Tuple<Action, KMBombInfo> OnTimerTick { get; set; }
 
         /// <summary>
         /// The module's display name. This is used for logging.
@@ -156,8 +105,8 @@ namespace EmikBaseModules
                 if (_timeLeft == value)
                     return;
                 _timeLeft = value;
-                if (OnTimerTick != null)
-                    OnTimerTick.Invoke();
+                if (OnTimerTick.Item1 != null)
+                    OnTimerTick.Item1.Invoke();
             }
         }
         private int _timeLeft;
@@ -173,72 +122,19 @@ namespace EmikBaseModules
             // This determines if it's running in-game or the editor.
             IsEditor = Application.isEditor;
 
-            /* 
-             * The following adds all appropriate parameters for each property you assign.
-             * The first if statements are to ask whether it should try adding events.
-             * The other if statements are to add the events if they exist.
-            */
+            // Sets ignore list.
+            if (KMBossModule != null)
+                IgnoreList = KMBossModule.GetIgnoredModules(KMBombModule, IgnoreList);
+            else if (IgnoreList != null)
+                PanicIfParentNull("KMBossModule", IgnoreList);
 
-            if (KMBombInfo != null)
-            {
-                if (OnBombExploded != null)
-                    KMBombInfo.OnBombExploded += delegate () { OnBombExploded.Invoke(); };
-                if (OnBombSolved != null)
-                    KMBombInfo.OnBombSolved += delegate () { OnBombSolved.Invoke(); }; 
-            }
-            else
-            {
-                PanicIfParentNull("KMBombInfo", OnBombExploded, OnBombSolved);
-            }
-
-            if (KMBombModule != null)
-            {
-                if (OnActivate != null)
-                    KMBombModule.OnActivate += delegate () { IsActivate = true; OnActivate.Invoke(); };
-
-                if (KMBossModule != null)
-                    IgnoreList = KMBossModule.GetIgnoredModules(KMBombModule, IgnoreList);
-                else if (IgnoreList != null)
-                    PanicIfParentNull("KMBossModule", IgnoreList);
-            }
-            else
-            {
-                PanicIfParentNull("KMBombModule", OnActivate);
-            }
-
+            // Sets colorblind.
             if (KMColorblindMode != null)
                 IsColorblind = KMColorblindMode.ColorblindModeActive;
 
-            if (KMGameInfo != null)
-            {
-                if (OnAlarmClockChange != null)
-                    KMGameInfo.OnAlarmClockChange += on => OnAlarmClockChange(on);
-                if (OnLightsChange != null)
-                    KMGameInfo.OnLightsChange += on => OnLightsChange(on);
-            }
-            else
-            {
-                PanicIfParentNull("KMGameInfo", OnActivateNeedy, OnNeedyActivation, OnNeedyDeactivation, OnTimerExpired);
-            }
-
-            if (KMNeedyModule != null)
-            {
-                if (OnActivateNeedy != null)
-                    KMNeedyModule.OnActivate += delegate () { OnActivateNeedy.Invoke(); };
-                if (OnNeedyActivation != null)
-                    KMNeedyModule.OnNeedyActivation += delegate () { OnNeedyActivation.Invoke(); };
-                if (OnNeedyDeactivation != null)
-                    KMNeedyModule.OnNeedyDeactivation += delegate () { OnNeedyDeactivation.Invoke(); };
-                if (OnTimerExpired != null)
-                    KMNeedyModule.OnTimerExpired += delegate () { OnTimerExpired.Invoke(); };
-            }
-            else
-            {
-                PanicIfParentNull("KMNeedyModule", OnActivateNeedy, OnNeedyActivation, OnNeedyDeactivation, OnTimerExpired);
-            }
-
-            if (OnTimerTick != null)
-                PanicIfNull("KMBombInfo", KMBombInfo);
+            // Makes sure OnTimerTick is paired with KMBombInfo.
+            if (OnTimerTick.Item2 != null)
+                PanicIfNull("OnTimerTick.Item2", OnTimerTick.Item2);
         }
 
         /// <summary>
@@ -247,8 +143,8 @@ namespace EmikBaseModules
         private void Update()
         {
             // Updates the amount of time left within the TimeLeft property.
-            if (KMBombInfo != null)
-                TimeLeft = (int)KMBombInfo.GetTime();
+            if (OnTimerTick.Item2 != null)
+                TimeLeft = (int)OnTimerTick.Item2.GetTime();
         }
 
         /// <summary>

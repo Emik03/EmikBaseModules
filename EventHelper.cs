@@ -2,7 +2,7 @@
 
 namespace EmikBaseModules
 {
-    internal static class SelectableHelper
+    internal static class EventHelper
     {
         internal static void Assign(this KMSelectable[] kmSelectable,
             Func<int, bool> onCancel = null,
@@ -88,6 +88,54 @@ namespace EmikBaseModules
                 kmSelectable.OnSelect += onSelect();
         }
 
+        internal static void Assign(this KMNeedyModule kmNeedyModule,
+            Func<Action> onActivate = null,
+            Func<Action> onNeedyActivation = null,
+            Func<Action> onNeedyDeactivation = null,
+            Func<Action> onTimerExpired = null)
+        {
+            if (kmNeedyModule == null)
+                throw new NullReferenceException("The KMNeedyModule is null. You cannot assign events to a KMNeedyModule without a reference to a KMNeedyModule.");
+            if (onActivate != null)
+                kmNeedyModule.OnActivate += delegate () { onActivate.Invoke(); };
+            if (onNeedyActivation != null)
+                kmNeedyModule.OnNeedyActivation += delegate () { onNeedyActivation.Invoke(); };
+            if (onNeedyDeactivation != null)
+                kmNeedyModule.OnNeedyDeactivation += delegate () { onNeedyDeactivation.Invoke(); };
+            if (onTimerExpired != null)
+                kmNeedyModule.OnTimerExpired += delegate () { onTimerExpired.Invoke(); };
+        }
+
+        internal static void Assign(this KMGameInfo kmGameInfo,
+            Func<bool, Action> onAlarmClockChange = null,
+            Func<bool, Action> onLightsChange = null)
+        {
+            if (onAlarmClockChange != null)
+                kmGameInfo.OnAlarmClockChange += on => onAlarmClockChange(on);
+            if (onLightsChange != null)
+                kmGameInfo.OnLightsChange += on => onLightsChange(on);
+        }
+
+        internal static void Assign(this KMBombInfo kmBombInfo,
+            Func<Action> onBombExploded = null,
+            Func<Action> onBombSolved = null)
+        {
+            if (onBombExploded != null)
+                kmBombInfo.OnBombExploded += delegate () { onBombExploded.Invoke(); };
+            if (onBombSolved != null)
+                kmBombInfo.OnBombSolved += delegate () { onBombSolved.Invoke(); };
+        }
+
+        internal static void Assign(this KMBombModule kmBombModule,
+            Func<Action> onActivate)
+        {
+            if (kmBombModule == null)
+                throw new NullReferenceException("The KMBombModule is null. You cannot assign events to a KMBombModule without a reference to a KMBombModule.");
+            if (onActivate == null)
+                throw new NullReferenceException("The OnActivate event is null. Considering that KMBombModule has only 1 event, this is considered a mistake.");
+            kmBombModule.OnActivate += delegate () { onActivate.Invoke(); };
+        }
+
         internal static void Unassign(this KMSelectable[] kmSelectable,
             Func<int, bool> onCancel = null,
             Func<int, Action> onDefocus = null,
@@ -170,6 +218,56 @@ namespace EmikBaseModules
                 kmSelectable.OnRight -= onRight();
             if (onSelect != null)
                 kmSelectable.OnSelect -= onSelect();
+        }
+
+        internal static void Unassign(this KMNeedyModule kmNeedyModule,
+            Func<Action> onActivateNeedy = null,
+            Func<Action> onNeedyActivation = null,
+            Func<Action> onNeedyDeactivation = null,
+            Func<Action> onTimerExpired = null)
+        {
+            if (kmNeedyModule == null)
+                throw new NullReferenceException("The KMNeedyModule is null. You cannot assign events to a KMNeedyModule without a reference to a KMNeedyModule.");
+            if (onActivateNeedy != null)
+                kmNeedyModule.OnActivate -= delegate () { onActivateNeedy.Invoke(); };
+            if (onNeedyActivation != null)
+                kmNeedyModule.OnNeedyActivation -= delegate () { onNeedyActivation.Invoke(); };
+            if (onNeedyDeactivation != null)
+                kmNeedyModule.OnNeedyDeactivation -= delegate () { onNeedyDeactivation.Invoke(); };
+            if (onTimerExpired != null)
+                kmNeedyModule.OnTimerExpired -= delegate () { onTimerExpired.Invoke(); };
+        }
+
+        internal static void Unassign(this KMGameInfo kmGameInfo,
+            Func<bool, Action> onAlarmClockChange = null,
+            Func<bool, Action> onLightsChange = null)
+        {
+            if (kmGameInfo == null)
+                throw new NullReferenceException("The KMGameInfo is null. You cannot assign events to a KMGameInfo without a reference to a KMGameInfo.");
+            if (onAlarmClockChange != null)
+                kmGameInfo.OnAlarmClockChange -= on => onAlarmClockChange(on);
+            if (onLightsChange != null)
+                kmGameInfo.OnLightsChange -= on => onLightsChange(on);
+        }
+
+        internal static void Unassign(this KMBombInfo kmBombInfo,
+            Func<Action> onBombExploded = null,
+            Func<Action> onBombSolved = null)
+        {
+            if (onBombExploded != null)
+                kmBombInfo.OnBombExploded -= delegate () { onBombExploded.Invoke(); };
+            if (onBombSolved != null)
+                kmBombInfo.OnBombSolved -= delegate () { onBombSolved.Invoke(); };
+        }
+
+        internal static void Unassign(this KMBombModule kmBombModule,
+            Func<Action> onActivate)
+        {
+            if (kmBombModule == null)
+                throw new NullReferenceException("The KMBombModule is null. You cannot assign events to a KMBombModule without a reference to a KMBombModule.");
+            if (onActivate == null)
+                throw new NullReferenceException("The OnActivate event is null. Considering that KMBombModule has only 1 event, this is considered a mistake.");
+            kmBombModule.OnActivate -= delegate () { onActivate.Invoke(); };
         }
     }
 }
