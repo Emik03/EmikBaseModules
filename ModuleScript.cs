@@ -11,27 +11,7 @@ namespace EmikBaseModules
         /// <summary>
         /// Instance of a regular module. Used to get the name of the module.
         /// </summary>
-        internal virtual KMBombModule KMBombModule { get; private set; }
-
-        /// <summary>
-        /// Instance of a boss module, is used to set the ignore list.
-        /// </summary>
-        internal virtual KMBossModule KMBossModule { get; private set; }
-
-        /// <summary>
-        /// Accesses the colorblind mod in-game, is used to set IsColorblind.
-        /// </summary>
-        internal virtual KMColorblindMode KMColorblindMode { get; private set; }
-
-        /// <summary>
-        /// Instance of a needy module. Used to get the name of the module.
-        /// </summary>
-        internal virtual KMNeedyModule KMNeedyModule { get; private set; }
-
-        /// <summary>
-        /// Called whenever the timer tick changes. Requires KMBombInfo to access the time left.
-        /// </summary>
-        internal virtual Tuple<Action, KMBombInfo> OnTimerTick { get; private set; }
+        internal virtual ModuleConfig ModuleConfig { get; private set; }
 
         /// <summary>
         /// The module's display name. This is used for logging.
@@ -40,10 +20,10 @@ namespace EmikBaseModules
         {
             get
             {
-                if (KMBombModule != null)
-                    return KMBombModule.ModuleDisplayName;
-                if (KMNeedyModule != null)
-                    return KMNeedyModule.ModuleDisplayName;
+                if (ModuleConfig.KMBombModule != null)
+                    return ModuleConfig.KMBombModule.ModuleDisplayName;
+                if (ModuleConfig.KMNeedyModule != null)
+                    return ModuleConfig.KMNeedyModule.ModuleDisplayName;
                 throw new NotImplementedException("ModuleName expects at least 1 of KMBombModule or KMNeedyModule to not be null.");
             }
         }
@@ -60,9 +40,9 @@ namespace EmikBaseModules
         { 
             get 
             {
-                if (KMColorblindMode == null)
+                if (ModuleConfig.KMColorblindMode == null)
                     throw new NotImplementedException("IsColorblind expects KMColorblindMode to not be null.");
-                return KMColorblindMode.ColorblindModeActive;
+                return ModuleConfig.KMColorblindMode.ColorblindModeActive;
             } 
         }
 
@@ -115,8 +95,8 @@ namespace EmikBaseModules
                 if (_timeLeft == value)
                     return;
                 _timeLeft = value;
-                if (OnTimerTick.Item1 != null)
-                    OnTimerTick.Item1.Invoke();
+                if (ModuleConfig.OnTimerTick == null)
+                    ((Tuple<Action, KMBombInfo>)ModuleConfig.OnTimerTick).Item1.Invoke();
             }
         }
         private int _timeLeft;
@@ -128,9 +108,9 @@ namespace EmikBaseModules
         {
             get
             {
-                if (KMBossModule == null)
+                if (ModuleConfig.KMBossModule == null)
                     throw new NotImplementedException("IgnoreList expects KMBossModule to not be null.");
-                return KMBossModule.GetIgnoredModules(KMBombModule, IgnoreList);
+                return ModuleConfig.KMBossModule.GetIgnoredModules(ModuleConfig.KMBombModule, IgnoreList);
             }
         }
 
@@ -143,7 +123,7 @@ namespace EmikBaseModules
             ModuleId = ++ModuleIdCounter;
 
             // Makes sure OnTimerTick is paired with KMBombInfo.
-            if (OnTimerTick.Item2 == null)
+            if (ModuleConfig.OnTimerTick != null && ((Tuple<Action, KMBombInfo>)ModuleConfig.OnTimerTick).Item2 == null)
                 throw new NotImplementedException("OnTimerTick has a null KMBombInfo. An instance of KMBombInfo is required to access time remaining.");
         }
 
@@ -153,7 +133,7 @@ namespace EmikBaseModules
         private void Update()
         {
             // Updates the amount of time left within the TimeLeft property.
-            TimeLeft = (int)OnTimerTick.Item2.GetTime();
+            TimeLeft = (int)((Tuple<Action, KMBombInfo>)ModuleConfig.OnTimerTick).Item2.GetTime();
         }
 
         /// <summary>
