@@ -95,7 +95,7 @@ namespace EmikBaseModules
                 if (_timeLeft == value)
                     return;
                 _timeLeft = value;
-                if (ModuleConfig.OnTimerTick == null)
+                if (ModuleConfig.OnTimerTick != null)
                     ((Tuple<Action, KMBombInfo>)ModuleConfig.OnTimerTick).Item1.Invoke();
             }
         }
