@@ -133,7 +133,8 @@ namespace EmikBaseModules
         private void Update()
         {
             // Updates the amount of time left within the TimeLeft property.
-            TimeLeft = (int)((Tuple<Action, KMBombInfo>)ModuleConfig.OnTimerTick).Item2.GetTime();
+            if (ModuleConfig.OnTimerTick != null)
+                TimeLeft = (int)((Tuple<Action, KMBombInfo>)ModuleConfig.OnTimerTick).Item2.GetTime();
         }
 
         /// <summary>
