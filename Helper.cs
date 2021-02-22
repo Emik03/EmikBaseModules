@@ -84,6 +84,24 @@ namespace EmikBaseModules
         }
 
         /// <summary>
+        /// Parses each element of an array into an integer array. If it fails, it returns null.
+        /// </summary>
+        /// <typeparam name="T">Typically char or string array, though this can theoretically be anything.</typeparam>
+        /// <param name="ts">The array to parse.</param>
+        /// <param name="min">Adds a constriction: The inclusive minimum value for each index.</param>
+        /// <param name="max">Adds a constriction: The inclusive maximum value for each index.</param>
+        /// <param name="minLength">Adds a constriction: The inclusive minimum value for the length of the array.</param>
+        /// <param name="maxLength">Adds a constriction: The inclusive maximum value for the length of the array.</param>
+        /// <returns>The provided array as an integer array if it can parse all elements successfully, otherwise null.</returns>
+        internal static int[] ToNumbers<T>(this T[] ts, int? min = null, int? max = null, int? minLength = null, int? maxLength = null)
+        {
+            int _;
+            return (minLength == null || minLength <= ts.Length) && (maxLength == null || maxLength >= ts.Length) &&
+                ts.All(t => int.TryParse(t.ToString(), out _) && (min == null || min <= _) && (max == null || max >= _))
+                ? ts.Select(t => int.Parse(t.ToString())).ToArray() : null;
+        }
+
+        /// <summary>
         /// Returns 0 if the array is null, otherwise the array length.
         /// </summary>
         /// <param name="array">The array to return its length.</param>
