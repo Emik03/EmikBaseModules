@@ -12,12 +12,15 @@ namespace EmikBaseModules
     /// </summary>
     public static class Helper
     {
+        private const BindingFlags DefaultLookup = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
+        private const BindingFlags DeclaredOnlyLookup = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
+
         /// <summary>
         /// Creates an auto-formatted debug log, typically used to display information about the module. Use String.Format to assign variables.
         /// </summary>
         /// <param name="module">The module that called this method, since it needs to access the module's name and id.</param>
         /// <param name="log">The information to log.</param>
-        /// <param name="logType"></param>
+        /// <param name="logType">The icon that displays on the log.</param>
         internal static void Log(this ModuleScript module, object log, LogType logType = LogType.Log)
         {
             string formattedLog = "[{0} #{1}]: {2}".Format((object)module.ModuleName, module.ModuleId, log);
@@ -41,6 +44,85 @@ namespace EmikBaseModules
                 default:
                     throw new NotImplementedException(logType.ToString() + " is not a valid log type.");
             }
+        }
+
+        /// <summary>
+        /// Creates a log containing the values of the arguments. This is meant for quick debugging, hence why it uses LogWarning to remind the user to clean it up later.
+        /// </summary>
+        /// <param name="module">The module that called this method, since it needs to access the module's name and id</param>
+        /// <param name="logs">The information to log.</param>
+        internal static void Dump(this ModuleScript module, params string[] logs)
+        {
+            IEnumerable<object>[] values = new IEnumerable<object>[logs.Length];
+            string[] formatted = new string[logs.Length];
+
+            for (int i = 0; i < logs.Length; i++)
+            {
+                var type = module.GetType();
+                var field = type.GetField(logs[i], DefaultLookup);
+                var property = type.GetProperty(logs[i], DefaultLookup);
+
+                if (field != null)
+                    values[i] = field.GetValue(module).AsEnumerableArray();
+                else if (property != null)
+                    values[i] = property.GetValue(module, null).AsEnumerableArray();
+                else
+                    throw new NotSupportedException("Argument {0} ({1}) couldn't be found as a field or property in {2}.".Format((object)logs[i], i, module));
+
+                formatted[i] = "\n\n[{0}]\n{1} ({2})\n{3}".Format(i, logs[i], logs[i].GetType(), values[i].Join(", "));
+            }
+
+            string formattedLog = "[{0} #{1}]: <DUMP>{2}".Format((object)module.ModuleName, module.ModuleId, formatted.Join(""));
+
+            Debug.LogWarning(formattedLog);
+        }
+
+
+        /// <summary>
+        /// Creates a log containing all properties and fields. This is meant for quick debugging, hence why it uses LogWarning to remind the user to clean it up later.
+        /// </summary>
+        /// <param name="module">The module that called this method, since it needs to access the module's name and id</param>
+        internal static void Dump(this ModuleScript module)
+        {
+            var values = new List<object>();
+            int index = 0;
+            const string format = "\n\n[{0}]\n{1} ({2})\n{3}";
+
+            var type = module.GetType();
+
+            foreach (var descriptor in type.GetFields(DeclaredOnlyLookup))
+            {
+                string name = descriptor.Name;
+                var value = descriptor.GetValue(module).AsEnumerableArray();
+                values.Add(format.Format(index++, name, value.GetType(), value.Join(", ")));
+            }
+
+            foreach (var descriptor in type.GetProperties(DeclaredOnlyLookup))
+            {
+                string name = descriptor.Name;
+                var value = descriptor.GetValue(module, null).AsEnumerableArray();
+                values.Add(format.Format(index++, name, value.GetType(), value.Join(", ")));
+            }
+
+            string formattedLog = "[{0} #{1}]: <DUMP>{2}".Format(
+                (object)module.ModuleName,
+                module.ModuleId,
+                values.Select(o => o.AsEnumerableArray().Join(", ")).Join(""));
+
+            Debug.LogWarning(formattedLog);
+        }
+
+        private static IEnumerable<object> AsEnumerableArray(this object item)
+        {
+            if (item is Array)
+            {
+                foreach (var i in (Array)item)
+                {
+                    yield return i;
+                }
+            }
+            else
+                yield return item;
         }
 
         /// <summary>

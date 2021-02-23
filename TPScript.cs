@@ -166,11 +166,12 @@ namespace EmikBaseModules
         /// </summary>
         /// <param name="input">The string to test on.</param>
         /// <param name="pattern">The regular expression, or the test itself. An @ symbol is generally recommended.</param>
+        /// <param name="lenient">Surrounds your regex with the common ^\s*STRING\s* that is used in most TP commands.</param>
         /// <param name="options">Options, by default these are the ones you generally want for TP.</param>
         /// <returns></returns>
-        internal bool IsMatch(string input, string pattern, RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
+        internal bool IsMatch(string input, string pattern, bool lenient = true, RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
         {
-            return Regex.IsMatch(input, pattern, options);
+            return Regex.IsMatch(input, lenient ? @"^\s*" + pattern + @"\s*$" : pattern, options);
         }
     }
 }

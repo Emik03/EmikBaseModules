@@ -18,12 +18,12 @@ namespace EmikBaseModules
             Func<int, Action> onSelect = null)
         {
             if (kmSelectable == null)
-                throw new NullReferenceException("The array is null. You cannot assign events to a KMSelectable without a reference to a KMSelectable.");
+                throw new ArgumentNullException("The array is null. You cannot assign events to a KMSelectable without a reference to a KMSelectable.");
             for (int i = 0; i < kmSelectable.Length; i++)
             {
                 int j = i;
                 if (kmSelectable[i] == null)
-                    throw new NullReferenceException("The index {0} is null. You cannot assign events to a KMSelectable without a reference to a KMSelectable.".Format(i));
+                    throw new ArgumentNullException("The index {0} is null. You cannot assign events to a KMSelectable without a reference to a KMSelectable.".Format(i));
                 if (onCancel != null)
                     kmSelectable[i].OnCancel += () => onCancel(j);
                 if (onDefocus != null)
@@ -63,7 +63,7 @@ namespace EmikBaseModules
             Func<Action> onSelect = null)
         {
             if (kmSelectable == null)
-                throw new NullReferenceException("The KMSelectable is null. You cannot assign events to a KMSelectable without a reference to a KMSelectable.");
+                throw new ArgumentNullException("The KMSelectable is null. You cannot assign events to a KMSelectable without a reference to a KMSelectable.");
             if (onCancel != null)
                 kmSelectable.OnCancel += () => onCancel();
             if (onDefocus != null)
@@ -95,7 +95,7 @@ namespace EmikBaseModules
             Func<Action> onTimerExpired = null)
         {
             if (kmNeedyModule == null)
-                throw new NullReferenceException("The KMNeedyModule is null. You cannot assign events to a KMNeedyModule without a reference to a KMNeedyModule.");
+                throw new ArgumentNullException("The KMNeedyModule is null. You cannot assign events to a KMNeedyModule without a reference to a KMNeedyModule.");
             if (onActivate != null)
                 kmNeedyModule.OnActivate += delegate () { onActivate.Invoke(); };
             if (onNeedyActivation != null)
@@ -130,9 +130,9 @@ namespace EmikBaseModules
             Func<Action> onActivate)
         {
             if (kmBombModule == null)
-                throw new NullReferenceException("The KMBombModule is null. You cannot assign events to a KMBombModule without a reference to a KMBombModule.");
+                throw new ArgumentNullException("The KMBombModule is null. You cannot assign events to a KMBombModule without a reference to a KMBombModule.");
             if (onActivate == null)
-                throw new NullReferenceException("The OnActivate event is null. Considering that KMBombModule has only 1 event, this is considered a mistake.");
+                throw new ArgumentNullException("The OnActivate event is null. Considering that KMBombModule has only 1 event, this is considered a mistake.");
             kmBombModule.OnActivate += delegate () { onActivate.Invoke(); };
         }
 
@@ -150,12 +150,12 @@ namespace EmikBaseModules
             Func<int, Action> onSelect = null)
         {
             if (kmSelectable == null)
-                throw new NullReferenceException("The array is null. You cannot unassign events to a KMSelectable without a reference to a KMSelectable.");
+                throw new ArgumentNullException("The array is null. You cannot unassign events to a KMSelectable without a reference to a KMSelectable.");
             for (int i = 0; i < kmSelectable.Length; i++)
             {
                 int j = i;
                 if (kmSelectable[i] == null)
-                    throw new NullReferenceException("The index {0} is null. You cannot unassign events to a KMSelectable without a reference to a KMSelectable.".Format(i));
+                    throw new ArgumentNullException("The index {0} is null. You cannot unassign events to a KMSelectable without a reference to a KMSelectable.".Format(i));
                 if (onCancel != null)
                     kmSelectable[i].OnCancel -= () => onCancel(j);
                 if (onDefocus != null)
@@ -195,7 +195,7 @@ namespace EmikBaseModules
             Func<Action> onSelect = null)
         {
             if (kmSelectable == null)
-                throw new NullReferenceException("The KMSelectable is null. You cannot unassign events to a KMSelectable without a reference to a KMSelectable.");
+                throw new ArgumentNullException("The KMSelectable is null. You cannot unassign events to a KMSelectable without a reference to a KMSelectable.");
             if (onCancel != null)
                 kmSelectable.OnCancel -= () => onCancel();
             if (onDefocus != null)
@@ -227,7 +227,7 @@ namespace EmikBaseModules
             Func<Action> onTimerExpired = null)
         {
             if (kmNeedyModule == null)
-                throw new NullReferenceException("The KMNeedyModule is null. You cannot assign events to a KMNeedyModule without a reference to a KMNeedyModule.");
+                throw new ArgumentNullException("The KMNeedyModule is null. You cannot assign events to a KMNeedyModule without a reference to a KMNeedyModule.");
             if (onActivateNeedy != null)
                 kmNeedyModule.OnActivate -= delegate () { onActivateNeedy.Invoke(); };
             if (onNeedyActivation != null)
@@ -243,7 +243,7 @@ namespace EmikBaseModules
             Func<bool, Action> onLightsChange = null)
         {
             if (kmGameInfo == null)
-                throw new NullReferenceException("The KMGameInfo is null. You cannot assign events to a KMGameInfo without a reference to a KMGameInfo.");
+                throw new ArgumentNullException("The KMGameInfo is null. You cannot assign events to a KMGameInfo without a reference to a KMGameInfo.");
             if (onAlarmClockChange != null)
                 kmGameInfo.OnAlarmClockChange -= on => onAlarmClockChange(on);
             if (onLightsChange != null)
@@ -264,9 +264,9 @@ namespace EmikBaseModules
             Func<Action> onActivate)
         {
             if (kmBombModule == null)
-                throw new NullReferenceException("The KMBombModule is null. You cannot assign events to a KMBombModule without a reference to a KMBombModule.");
+                throw new ArgumentNullException("The KMBombModule is null. You cannot assign events to a KMBombModule without a reference to a KMBombModule.");
             if (onActivate == null)
-                throw new NullReferenceException("The OnActivate event is null. Considering that KMBombModule has only 1 event, this is considered a mistake.");
+                throw new ArgumentNullException("The OnActivate event is null. Considering that KMBombModule has only 1 event, this is considered a mistake.");
             kmBombModule.OnActivate -= delegate () { onActivate.Invoke(); };
         }
     }

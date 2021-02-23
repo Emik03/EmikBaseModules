@@ -41,7 +41,7 @@ namespace EmikBaseModules
             get 
             {
                 if (ModuleConfig.KMColorblindMode == null)
-                    throw new NotImplementedException("IsColorblind expects KMColorblindMode to not be null.");
+                    throw new MissingReferenceException("IsColorblind expects KMColorblindMode to not be null.");
                 return ModuleConfig.KMColorblindMode.ColorblindModeActive;
             } 
         }
@@ -109,10 +109,15 @@ namespace EmikBaseModules
             get
             {
                 if (ModuleConfig.KMBossModule == null)
-                    throw new NotImplementedException("IgnoreList expects KMBossModule to not be null.");
-                return ModuleConfig.KMBossModule.GetIgnoredModules(ModuleConfig.KMBombModule, IgnoreList);
+                    throw new MissingReferenceException("IgnoreList expects KMBossModule to not be null.");
+                return ModuleConfig.KMBossModule.GetIgnoredModules(ModuleConfig.KMBombModule, _ignoreList);
+            }
+            set
+            {
+                _ignoreList = value;
             }
         }
+        private string[] _ignoreList;
 
         /// <summary>
         /// Event initializer.
@@ -124,7 +129,7 @@ namespace EmikBaseModules
 
             // Makes sure OnTimerTick is paired with KMBombInfo.
             if (ModuleConfig.OnTimerTick != null && ((Tuple<Action, KMBombInfo>)ModuleConfig.OnTimerTick).Item2 == null)
-                throw new NotImplementedException("OnTimerTick has a null KMBombInfo. An instance of KMBombInfo is required to access time remaining.");
+                throw new NullReferenceException("OnTimerTick has a null KMBombInfo. An instance of KMBombInfo is required to access time remaining.");
         }
 
         /// <summary>
@@ -135,22 +140,6 @@ namespace EmikBaseModules
             // Updates the amount of time left within the TimeLeft property.
             if (ModuleConfig.OnTimerTick != null)
                 TimeLeft = (int)((Tuple<Action, KMBombInfo>)ModuleConfig.OnTimerTick).Item2.GetTime();
-        }
-
-        /// <summary>
-        /// Throws an error if the object is null, since this is considered a mistake.
-        /// </summary>
-        /// <param name="name">The name to assign it in the error message, since reflection cannot be used to obtain an unknown property.</param>
-        /// <param name="obj">The object to check null validity on.</param>
-        private void PanicIfNull(string name, object obj)
-        {
-            const string ErrorMessage = @"{0} is null. Be sure to check that you assigned your public fields correctly!";
-
-            if (obj == null)
-            {
-                this.Log(ErrorMessage.Format((object)name), LogType.Error);
-                enabled = false;
-            }
         }
     }
 }
