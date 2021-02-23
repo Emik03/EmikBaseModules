@@ -64,9 +64,9 @@ namespace EmikBaseModules
                 var property = type.GetProperty(logs[i], DefaultLookup);
 
                 if (field != null)
-                    values[i] = field.GetValue(module).AsEnumerableArray();
+                    values[i] = field.GetValue(module).ToEnumerableUnwrap();
                 else if (property != null)
-                    values[i] = property.GetValue(module, null).AsEnumerableArray();
+                    values[i] = property.GetValue(module, null).ToEnumerableUnwrap();
                 else
                     throw new NotSupportedException("Argument {0} ({1}) couldn't be found as a field or property in {2}.".Format((object)logs[i], i, module));
 
@@ -77,7 +77,6 @@ namespace EmikBaseModules
 
             Debug.LogWarning(formattedLog);
         }
-
 
         /// <summary>
         /// Creates a log containing all properties and fields. This is meant for quick debugging, hence why it uses LogWarning to remind the user to clean it up later.
@@ -94,20 +93,20 @@ namespace EmikBaseModules
             {
                 string name = descriptor.Name;
                 var value = descriptor.GetValue(module);
-                values.Add(DumpFormat.Format(index++, name, value == null ? "Null" : value.GetType().ToString(), value.AsEnumerableArray().Join(", ")));
+                values.Add(DumpFormat.Format(index++, name, value == null ? "Null" : value.GetType().ToString(), value.ToEnumerableUnwrap().Join(", ")));
             }
 
             foreach (var descriptor in type.GetProperties(DeclaredOnlyLookup))
             {
                 string name = descriptor.Name;
                 var value = descriptor.GetValue(module, null);
-                values.Add(DumpFormat.Format(index++, name, value == null ? "Null" : value.GetType().ToString(), value.AsEnumerableArray().Join(", ")));
+                values.Add(DumpFormat.Format(index++, name, value == null ? "Null" : value.GetType().ToString(), value.ToEnumerableUnwrap().Join(", ")));
             }
 
             string formattedLog = "[{0} #{1}]: <DUMP>{2}".Format(
                 (object)module.ModuleName,
                 module.ModuleId,
-                values.Select(o => o.AsEnumerableArray().Join(", ")).Join(""));
+                values.Select(o => o.ToEnumerableUnwrap().Join(", ")).Join(""));
 
             Debug.LogWarning(formattedLog);
         }
@@ -117,13 +116,13 @@ namespace EmikBaseModules
         /// </summary>
         /// <param name="item">The object, which is either array or singular.</param>
         /// <returns>All indexes of the object if it's an array, otherwise itself.</returns>
-        private static IEnumerable<object> AsEnumerableArray(this object item)
+        internal static IEnumerable<object> ToEnumerableUnwrap(this object item)
         {
             if (item is Array)
             {
                 foreach (var i in (Array)item)
                 {
-                    var ienums = AsEnumerableArray(i);
+                    var ienums = i.ToEnumerableUnwrap();
 
                     foreach (var e in ienums)
                     {
