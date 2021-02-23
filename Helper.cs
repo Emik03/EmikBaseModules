@@ -14,7 +14,8 @@ namespace EmikBaseModules
     {
         private const BindingFlags DefaultLookup = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
         private const BindingFlags DeclaredOnlyLookup = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
-
+        private const string DumpFormat = "\n\n[{0}] {1}\n({2})\n{3}";
+        
         /// <summary>
         /// Creates an auto-formatted debug log, typically used to display information about the module. Use String.Format to assign variables.
         /// </summary>
@@ -69,7 +70,7 @@ namespace EmikBaseModules
                 else
                     throw new NotSupportedException("Argument {0} ({1}) couldn't be found as a field or property in {2}.".Format((object)logs[i], i, module));
 
-                formatted[i] = "\n\n[{0}]\n{1} ({2})\n{3}".Format(i, logs[i], logs[i].GetType(), values[i].Join(", "));
+                formatted[i] = DumpFormat.Format(i, logs[i], values[i] == null ? "Null" : values[i].GetType().ToString(), values[i].Join(", "));
             }
 
             string formattedLog = "[{0} #{1}]: <DUMP>{2}".Format((object)module.ModuleName, module.ModuleId, formatted.Join(""));
@@ -86,22 +87,21 @@ namespace EmikBaseModules
         {
             var values = new List<object>();
             int index = 0;
-            const string format = "\n\n[{0}]\n{1} ({2})\n{3}";
 
             var type = module.GetType();
 
             foreach (var descriptor in type.GetFields(DeclaredOnlyLookup))
             {
                 string name = descriptor.Name;
-                var value = descriptor.GetValue(module).AsEnumerableArray();
-                values.Add(format.Format(index++, name, value.GetType(), value.Join(", ")));
+                var value = descriptor.GetValue(module);
+                values.Add(DumpFormat.Format(index++, name, value == null ? "Null" : value.GetType().ToString(), value.AsEnumerableArray().Join(", ")));
             }
 
             foreach (var descriptor in type.GetProperties(DeclaredOnlyLookup))
             {
                 string name = descriptor.Name;
-                var value = descriptor.GetValue(module, null).AsEnumerableArray();
-                values.Add(format.Format(index++, name, value.GetType(), value.Join(", ")));
+                var value = descriptor.GetValue(module, null);
+                values.Add(DumpFormat.Format(index++, name, value == null ? "Null" : value.GetType().ToString(), value.AsEnumerableArray().Join(", ")));
             }
 
             string formattedLog = "[{0} #{1}]: <DUMP>{2}".Format(
@@ -112,17 +112,30 @@ namespace EmikBaseModules
             Debug.LogWarning(formattedLog);
         }
 
+        /// <summary>
+        /// Unwraps the object as an array if it is an array, otherwise it simply returns an IEnumerable of just the item.
+        /// </summary>
+        /// <param name="item">The object, which is either array or singular.</param>
+        /// <returns>All indexes of the object if it's an array, otherwise itself.</returns>
         private static IEnumerable<object> AsEnumerableArray(this object item)
         {
             if (item is Array)
             {
                 foreach (var i in (Array)item)
                 {
-                    yield return i;
+                    var ienums = AsEnumerableArray(i);
+
+                    foreach (var e in ienums)
+                    {
+                        yield return e;
+                    }
                 }
             }
+
             else
+            {
                 yield return item;
+            }
         }
 
         /// <summary>
