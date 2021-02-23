@@ -23,7 +23,7 @@ namespace EmikBaseModules
             {
                 int j = i;
                 if (kmSelectable[i] == null)
-                    throw new ArgumentNullException("The index {0} is null. You cannot assign events to a KMSelectable without a reference to a KMSelectable.".Format(i));
+                    throw new ArgumentNullException("The index {0} is null. You cannot assign events to a KMSelectable without a reference to a KMSelectable.".Form(i));
                 if (onCancel != null)
                     kmSelectable[i].OnCancel += () => onCancel(j);
                 if (onDefocus != null)
@@ -155,7 +155,7 @@ namespace EmikBaseModules
             {
                 int j = i;
                 if (kmSelectable[i] == null)
-                    throw new ArgumentNullException("The index {0} is null. You cannot unassign events to a KMSelectable without a reference to a KMSelectable.".Format(i));
+                    throw new ArgumentNullException("The index {0} is null. You cannot unassign events to a KMSelectable without a reference to a KMSelectable.".Form(i));
                 if (onCancel != null)
                     kmSelectable[i].OnCancel -= () => onCancel(j);
                 if (onDefocus != null)

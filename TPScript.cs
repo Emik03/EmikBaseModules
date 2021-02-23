@@ -29,7 +29,7 @@ namespace EmikBaseModules
         /// <summary>
         /// This specifies the link sent when doing !{0} manual. By default this returns the HTML link into the repository.
         /// </summary>
-        internal virtual string TwitchManualCode { get { return "https://ktane.timwi.de/HTML/{0}.html".Format((object)ModuleScript.ModuleName); } }
+        internal virtual string TwitchManualCode { get { return "https://ktane.timwi.de/HTML/{0}.html".Form((object)ModuleScript.ModuleName); } }
 
         /// <summary>
         /// Should the TwitchPlays command be cancelled?
