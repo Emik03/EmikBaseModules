@@ -24,7 +24,7 @@ namespace EmikBaseModules
         /// <param name="logType">The icon that displays on the log.</param>
         internal static void Log(this ModuleScript module, object log, LogType logType = LogType.Log)
         {
-            string formattedLog = "[{0} #{1}]: {2}".Form((object)module.ModuleName, module.ModuleId, log);
+            string formattedLog = "[{0} #{1}]: {2}".Form(module.ModuleName, module.ModuleId, log);
             switch (logType)
             {
                 case LogType.Error:
@@ -68,12 +68,12 @@ namespace EmikBaseModules
                 else if (property != null)
                     values[i] = property.GetValue(module, null).ToEnumerableUnwrap();
                 else
-                    throw new NotSupportedException("Argument {0} ({1}) couldn't be found as a field or property in {2}.".Form((object)logs[i], i, module));
+                    throw new NotSupportedException("Argument {0} ({1}) couldn't be found as a field or property in {2}.".Form(logs[i], i, module));
 
                 formatted[i] = DumpFormat.Form(i, logs[i], values[i] == null ? "Null" : values[i].GetType().ToString(), values[i].Join(", "));
             }
 
-            string formattedLog = "[{0} #{1}]: <DUMP>{2}".Form((object)module.ModuleName, module.ModuleId, formatted.Join(""));
+            string formattedLog = "[{0} #{1}]: <DUMP>{2}".Form(module.ModuleName, module.ModuleId, formatted.Join(""));
 
             Debug.LogWarning(formattedLog);
         }
