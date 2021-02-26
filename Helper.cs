@@ -54,6 +54,9 @@ namespace EmikBaseModules
         /// <param name="logs">The information to log.</param>
         internal static void Dump(this ModuleScript module, params string[] logs)
         {
+            if (!module.IsEditor)
+                return;
+
             IEnumerable<object>[] values = new IEnumerable<object>[logs.Length];
             string[] formatted = new string[logs.Length];
 
@@ -84,6 +87,9 @@ namespace EmikBaseModules
         /// <param name="module">The module that called this method, since it needs to access the module's name and id</param>
         internal static void Dump(this ModuleScript module)
         {
+            if (!module.IsEditor)
+                return;
+
             var values = new List<object>();
             int index = 0;
 
