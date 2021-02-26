@@ -48,13 +48,13 @@ namespace EmikBaseModules
         }
 
         /// <summary>
-        /// Creates a log containing the values of the arguments. This is meant for quick debugging, hence why it uses LogWarning to remind the user to clean it up later.
+        /// Creates a log containing the values of the arguments. This is meant for quick debugging, hence why it uses LogWarning to remind the user to clean it up later. Make the first index of the string array a string empty or null if you want it to run in-game!
         /// </summary>
         /// <param name="module">The module that called this method, since it needs to access the module's name and id</param>
         /// <param name="logs">The information to log.</param>
         internal static void Dump(this ModuleScript module, params string[] logs)
         {
-            if (!module.IsEditor)
+            if (!logs[0].IsNullOrEmpty() && !module.IsEditor)
                 return;
 
             IEnumerable<object>[] values = new IEnumerable<object>[logs.Length];
@@ -62,6 +62,9 @@ namespace EmikBaseModules
 
             for (int i = 0; i < logs.Length; i++)
             {
+                if (logs[i].IsNullOrEmpty())
+                    continue;
+
                 var type = module.GetType();
                 var field = type.GetField(logs[i], DefaultLookup);
                 var property = type.GetProperty(logs[i], DefaultLookup);
@@ -85,9 +88,10 @@ namespace EmikBaseModules
         /// Creates a log containing all properties and fields. This is meant for quick debugging, hence why it uses LogWarning to remind the user to clean it up later.
         /// </summary>
         /// <param name="module">The module that called this method, since it needs to access the module's name and id</param>
-        internal static void Dump(this ModuleScript module)
+        /// <param name="allowInGame">Whether it should allow the code to run in-game, and not only on Unity.</param>
+        internal static void Dump(this ModuleScript module, bool allowInGame = false)
         {
-            if (!module.IsEditor)
+            if (!allowInGame && !module.IsEditor)
                 return;
 
             var values = new List<object>();
