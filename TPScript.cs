@@ -25,9 +25,9 @@ namespace EmikBaseModules
         /// <summary>
         /// A help message that can be performed with !{#} help where # is the module id.
         /// </summary>
-        internal abstract string TwitchHelpMessage { get; }
+        internal virtual string TwitchHelpMessage { get { return string.Empty; } }
         /// <summary>
-        /// This specifies the link sent when doing !{0} manual. By default this returns the HTML link into the repository.
+        /// This specifies the link sent when doing !{#} manual. By default this returns the HTML link into the repository.
         /// </summary>
         internal virtual string TwitchManualCode { get { return "https://ktane.timwi.de/HTML/{0}.html".Form(ModuleScript.ModuleName); } }
 

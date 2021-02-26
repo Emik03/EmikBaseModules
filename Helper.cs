@@ -104,7 +104,7 @@ namespace EmikBaseModules
             }
 
             string formattedLog = "[{0} #{1}]: <DUMP>{2}".Form(
-                (object)module.ModuleName,
+                module.ModuleName,
                 module.ModuleId,
                 values.Select(o => o.ToEnumerableUnwrap().Join(", ")).Join(""));
 
