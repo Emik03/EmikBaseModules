@@ -380,6 +380,17 @@ namespace EmikBaseModules
         }
 
         /// <summary>
+        /// Returns the character as uppercase.
+        /// </summary>
+        /// <typeparam name="T">The datatype of the variable.</typeparam>
+        /// <param name="source">The variable to apply uppercase to.</param>
+        /// <returns>The uppercase version of the character.</returns>
+        internal static char ToUpper<T>(this T source)
+        {
+            return source.ToString().ToUpperInvariant()[0];
+        }
+
+        /// <summary>
         /// Formats and returns the string with the arguments specified. {#} where # is a number is used as placeholders for these variables.
         /// </summary>
         /// <param name="str">The template string.</param>
