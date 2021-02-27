@@ -57,7 +57,6 @@ namespace EmikBaseModules
             if (!logs[0].IsNullOrEmpty() && !module.IsEditor)
                 return;
 
-            IEnumerable<object>[] values = new IEnumerable<object>[logs.Length];
             string[] formatted = new string[logs.Length];
 
             for (int i = 0; i < logs.Length; i++)
@@ -68,15 +67,16 @@ namespace EmikBaseModules
                 var type = module.GetType();
                 var field = type.GetField(logs[i], DefaultLookup);
                 var property = type.GetProperty(logs[i], DefaultLookup);
+                object value;
 
                 if (field != null)
-                    values[i] = field.GetValue(module).ToEnumerableUnwrap();
+                    value = field.GetValue(module);
                 else if (property != null)
-                    values[i] = property.GetValue(module, null).ToEnumerableUnwrap();
+                    value = property.GetValue(module, null);
                 else
                     throw new NotSupportedException("Argument {0} ({1}) couldn't be found as a field or property in {2}.".Form(logs[i], i, module));
 
-                formatted[i] = DumpFormat.Form(i, logs[i], values[i] == null ? "Null" : values[i].GetType().ToString(), values[i].Join(", "));
+                formatted[i] = DumpFormat.Form(i, logs[i], value == null ? "Null" : value.GetType().ToString(), value.ToEnumerableUnwrap().Join(", "));
             }
 
             string formattedLog = "[{0} #{1}]: <DUMP>{2}".Form(module.ModuleName, module.ModuleId, formatted.Join(""));
