@@ -11,7 +11,7 @@ namespace EmikBaseModules
         /// <summary>
         /// Instance of a regular module. Used to get the name of the module.
         /// </summary>
-        internal virtual ModuleConfig ModuleConfig { get; private set; }
+        internal abstract ModuleConfig ModuleConfig { get; }
 
         /// <summary>
         /// The module's display name. This is used for logging.
