@@ -2,6 +2,9 @@
 
 namespace EmikBaseModules
 {
+    /// <summary>
+    /// KMFramework extension methods that makes it easier to assign multiple events to a variable in one statement. Written by Emik.
+    /// </summary>
     internal static class EventHelper
     {
         internal static void Assign(this KMSelectable[] kmSelectable,

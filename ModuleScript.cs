@@ -4,12 +4,12 @@ using System;
 namespace EmikBaseModules
 {
     /// <summary>
-    /// Base class for regular and needy modded modules in Keep Talking and Nobody Explodes written by Emik.
+    /// Base class for regular and needy modded modules in Keep Talking and Nobody Explodes. Written by Emik.
     /// </summary>
     public abstract class ModuleScript : MonoBehaviour
     {
         /// <summary>
-        /// Instance of a regular module. Used to get the name of the module.
+        /// Instance of a modded module. Used to get the name of the module.
         /// </summary>
         internal abstract ModuleConfig ModuleConfig { get; }
 

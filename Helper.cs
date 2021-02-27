@@ -8,7 +8,7 @@ using Rnd = UnityEngine.Random;
 namespace EmikBaseModules
 {
     /// <summary>
-    /// Helper/extension class for regular and needy modded modules in Keep Talking and Nobody Explodes written by Emik.
+    /// General extension class covering both KMFramework and native datatypes. Written by Emik.
     /// </summary>
     public static class Helper
     {

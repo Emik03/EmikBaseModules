@@ -3,7 +3,7 @@
 namespace EmikBaseModules
 {
     /// <summary>
-    /// Contains all information to give to ModuleScript within one class.
+    /// Contains all information to pass into ModuleScript. Written by Emik.
     /// </summary>
     internal class ModuleConfig
     {

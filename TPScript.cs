@@ -6,7 +6,7 @@ using UnityEngine;
 namespace EmikBaseModules
 {
     /// <summary>
-    /// Base class for TwitchPlays support in regular and needy modded modules written by Emik.
+    /// Base class for TwitchPlays support for regular and needy modded modules in Keep Talking and Nobody Explodes. Written by Emik.
     /// </summary>
     public abstract class TPScript : MonoBehaviour
     {

@@ -1,24 +1,25 @@
 ﻿namespace EmikBaseModules
 {
     /// <summary>
-    /// A basic tuple datatype for C# 4.
+    /// A basic tuple datatype for C# 4. Written by Emik.
     /// </summary>
-    public struct Tuple<T1>
+    public struct Tuple<T>
     {
-        public Tuple(T1 item1)
+        public Tuple(T item1)
         {
             Item1 = item1;
         }
 
-        public T1 Item1 { get; set; }
+        public T Item1 { get; set; }
+
         /// <summary>
         /// Returns all elements as one array, in order of items.
         /// </summary>
-        public object[] ToArray { get { return new object[] { Item1 }; } }
+        public T[] ToArray { get { return new T[] { Item1 }; } }
     }
 
     /// <summary>
-    /// A basic tuple datatype for C# 4.
+    /// A basic tuple datatype for C# 4. Written by Emik.
     /// </summary>
     public struct Tuple<T1, T2>
     {
@@ -30,6 +31,7 @@
 
         public T1 Item1 { get; set; }
         public T2 Item2 { get; set; }
+
         /// <summary>
         /// Returns all elements as one array, in order of items.
         /// </summary>
@@ -37,7 +39,7 @@
     }
 
     /// <summary>
-    /// A basic tuple datatype for C# 4.
+    /// A basic tuple datatype for C# 4. Written by Emik.
     /// </summary>
     public struct Tuple<T1, T2, T3>
     {
@@ -51,6 +53,7 @@
         public T1 Item1 { get; set; }
         public T2 Item2 { get; set; }
         public T3 Item3 { get; set; }
+
         /// <summary>
         /// Returns all elements as one array, in order of items.
         /// </summary>
@@ -58,7 +61,7 @@
     }
 
     /// <summary>
-    /// A basic tuple datatype for C# 4.
+    /// A basic tuple datatype for C# 4. Written by Emik.
     /// </summary>
     public struct Tuple<T1, T2, T3, T4>
     {
@@ -74,6 +77,7 @@
         public T2 Item2 { get; set; }
         public T3 Item3 { get; set; }
         public T4 Item4 { get; set; }
+
         /// <summary>
         /// Returns all elements as one array, in order of items.
         /// </summary>
@@ -81,7 +85,7 @@
     }
 
     /// <summary>
-    /// A basic tuple datatype for C# 4.
+    /// A basic tuple datatype for C# 4. Written by Emik.
     /// </summary>
     public struct Tuple<T1, T2, T3, T4, T5>
     {
@@ -99,6 +103,7 @@
         public T3 Item3 { get; set; }
         public T4 Item4 { get; set; }
         public T5 Item5 { get; set; }
+
         /// <summary>
         /// Returns all elements as one array, in order of items.
         /// </summary>
@@ -106,7 +111,7 @@
     }
 
     /// <summary>
-    /// A basic tuple datatype for C# 4.
+    /// A basic tuple datatype for C# 4. Written by Emik.
     /// </summary>
     public struct Tuple<T1, T2, T3, T4, T5, T6>
     {
@@ -126,6 +131,7 @@
         public T4 Item4 { get; set; }
         public T5 Item5 { get; set; }
         public T6 Item6 { get; set; }
+
         /// <summary>
         /// Returns all elements as one array, in order of items.
         /// </summary>
@@ -133,7 +139,7 @@
     }
 
     /// <summary>
-    /// A basic tuple datatype for C# 4.
+    /// A basic tuple datatype for C# 4. Written by Emik.
     /// </summary>
     public struct Tuple<T1, T2, T3, T4, T5, T6, T7>
     {
@@ -155,6 +161,7 @@
         public T5 Item5 { get; set; }
         public T6 Item6 { get; set; }
         public T7 Item7 { get; set; }
+
         /// <summary>
         /// Returns all elements as one array, in order of items.
         /// </summary>
@@ -162,7 +169,7 @@
     }
 
     /// <summary>
-    /// A basic tuple datatype for C# 4.
+    /// A basic tuple datatype for C# 4. Written by Emik.
     /// </summary>
     public struct Tuple<T1, T2, T3, T4, T5, T6, T7, T8>
     {
@@ -186,6 +193,7 @@
         public T6 Item6 { get; set; }
         public T7 Item7 { get; set; }
         public T8 Item8 { get; set; }
+
         /// <summary>
         /// Returns all elements as one array, in order of items.
         /// </summary>
@@ -193,7 +201,7 @@
     }
 
     /// <summary>
-    /// A basic tuple datatype for C# 4.
+    /// A basic tuple datatype for C# 4. Written by Emik.
     /// </summary>
     public struct Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>
     {
@@ -219,6 +227,7 @@
         public T7 Item7 { get; set; }
         public T8 Item8 { get; set; }
         public T9 Item9 { get; set; }
+
         /// <summary>
         /// Returns all elements as one array, in order of items.
         /// </summary>

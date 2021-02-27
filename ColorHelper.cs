@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace EmikBaseModules
 {
+    /// <summary>
+    /// Allows you to modify colors' individual RGBA components relatively and absolutely. Written by Emik.
+    /// </summary>
     public static class ColorHelper
     {
         /// <summary>
