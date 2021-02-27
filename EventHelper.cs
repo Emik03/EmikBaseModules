@@ -92,16 +92,17 @@ namespace EmikBaseModules
             Func<Action> onActivate = null,
             Func<Action> onNeedyActivation = null,
             Func<Action> onNeedyDeactivation = null,
-            Func<Action> onTimerExpired = null)
+            Func<Action> onTimerExpired = null,
+            ModuleScript moduleScript = null)
         {
             if (kmNeedyModule == null)
                 throw new ArgumentNullException("The KMNeedyModule is null. You cannot assign events to a KMNeedyModule without a reference to a KMNeedyModule.");
             if (onActivate != null)
                 kmNeedyModule.OnActivate += delegate () { onActivate.Invoke(); };
             if (onNeedyActivation != null)
-                kmNeedyModule.OnNeedyActivation += delegate () { onNeedyActivation.Invoke(); };
+                kmNeedyModule.OnNeedyActivation += delegate () { if (moduleScript != null) moduleScript.IsNeedyActive = true; onNeedyActivation.Invoke(); };
             if (onNeedyDeactivation != null)
-                kmNeedyModule.OnNeedyDeactivation += delegate () { onNeedyDeactivation.Invoke(); };
+                kmNeedyModule.OnNeedyDeactivation += delegate () { if (moduleScript != null) moduleScript.IsNeedyActive = false; onNeedyDeactivation.Invoke(); };
             if (onTimerExpired != null)
                 kmNeedyModule.OnTimerExpired += delegate () { onTimerExpired.Invoke(); };
         }
@@ -127,13 +128,14 @@ namespace EmikBaseModules
         }
 
         internal static void Assign(this KMBombModule kmBombModule,
-            Func<Action> onActivate)
+            Func<Action> onActivate,
+            ModuleScript moduleScript = null)
         {
             if (kmBombModule == null)
                 throw new ArgumentNullException("The KMBombModule is null. You cannot assign events to a KMBombModule without a reference to a KMBombModule.");
             if (onActivate == null)
                 throw new ArgumentNullException("The OnActivate event is null. Considering that KMBombModule has only 1 event, this is considered a mistake.");
-            kmBombModule.OnActivate += delegate () { onActivate.Invoke(); };
+            kmBombModule.OnActivate += delegate () { if (moduleScript != null) moduleScript.IsActivate = true; onActivate.Invoke(); };
         }
 
         internal static void Unassign(this KMSelectable[] kmSelectable,
@@ -224,16 +226,17 @@ namespace EmikBaseModules
             Func<Action> onActivateNeedy = null,
             Func<Action> onNeedyActivation = null,
             Func<Action> onNeedyDeactivation = null,
-            Func<Action> onTimerExpired = null)
+            Func<Action> onTimerExpired = null,
+            ModuleScript moduleScript = null)
         {
             if (kmNeedyModule == null)
                 throw new ArgumentNullException("The KMNeedyModule is null. You cannot assign events to a KMNeedyModule without a reference to a KMNeedyModule.");
             if (onActivateNeedy != null)
                 kmNeedyModule.OnActivate -= delegate () { onActivateNeedy.Invoke(); };
             if (onNeedyActivation != null)
-                kmNeedyModule.OnNeedyActivation -= delegate () { onNeedyActivation.Invoke(); };
+                kmNeedyModule.OnNeedyActivation -= delegate () { if (moduleScript != null) moduleScript.IsNeedyActive = true; onNeedyActivation.Invoke(); };
             if (onNeedyDeactivation != null)
-                kmNeedyModule.OnNeedyDeactivation -= delegate () { onNeedyDeactivation.Invoke(); };
+                kmNeedyModule.OnNeedyDeactivation -= delegate () { if (moduleScript != null) moduleScript.IsNeedyActive = false; onNeedyDeactivation.Invoke(); };
             if (onTimerExpired != null)
                 kmNeedyModule.OnTimerExpired -= delegate () { onTimerExpired.Invoke(); };
         }
@@ -261,13 +264,14 @@ namespace EmikBaseModules
         }
 
         internal static void Unassign(this KMBombModule kmBombModule,
-            Func<Action> onActivate)
+            Func<Action> onActivate,
+            ModuleScript moduleScript = null)
         {
             if (kmBombModule == null)
                 throw new ArgumentNullException("The KMBombModule is null. You cannot assign events to a KMBombModule without a reference to a KMBombModule.");
             if (onActivate == null)
                 throw new ArgumentNullException("The OnActivate event is null. Considering that KMBombModule has only 1 event, this is considered a mistake.");
-            kmBombModule.OnActivate -= delegate () { onActivate.Invoke(); };
+            kmBombModule.OnActivate -= delegate () { if (moduleScript != null) moduleScript.IsActivate = true; onActivate.Invoke(); };
         }
     }
 }

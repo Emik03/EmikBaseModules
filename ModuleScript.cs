@@ -31,7 +31,7 @@ namespace EmikBaseModules
         /// <summary>
         /// Are the lights in-game on? (Has the bomb started the timer?)
         /// </summary>
-        internal bool IsActivate { get; private set; }
+        internal bool IsActivate { get; set; }
 
         /// <summary>
         /// Is Colorblind mode enabled? (Using KMColorblindMode)
@@ -55,6 +55,11 @@ namespace EmikBaseModules
         /// Has the module been solved?
         /// </summary>
         internal bool IsSolve { get; set; }
+
+        /// <summary>
+        /// Is the needy currently active in its events?
+        /// </summary>
+        internal bool IsNeedyActive { get; set; }
 
         /// <summary>
         /// Is TwitchPlays active?
