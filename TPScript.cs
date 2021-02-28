@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -61,6 +62,15 @@ namespace EmikBaseModules
             EndWaitingMusic = "end waiting music", 
             ToggleWaitingMusic = "toggle waiting music", 
             HideCamera = "hide camera";
+
+        /// <summary>
+        /// NullReferenceException checker.
+        /// </summary>
+        private void Start()
+        {
+            if (ModuleScript == null)
+                throw new NullReferenceException("TPScript received a null reference to the module. This is considered a mistake. Make sure that you have both assigned the property correctly inside your TP implementation, and assigned the public field in your Unity project!");
+        }
 
         // These methods also do similar, except they have additional parameters.
 
