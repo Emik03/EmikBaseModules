@@ -1,3 +1,6 @@
+# WARNING
+This repository is outdated and only exists for legacy reasons, please go to [KeepCodingAndNobodyExplodes](https://github.com/Emik03/KeepCodingAndNobodyExplodes) for the up-to-date version.
+
 # EmikBaseModules
 
 > "Don't repeat yourself (DRY, or sometimes do not repeat yourself) is a principle of software development aimed at reducing repetition of software patterns, replacing it with abstractions or using data normalization to avoid redundancy." - [Wikipedia](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
